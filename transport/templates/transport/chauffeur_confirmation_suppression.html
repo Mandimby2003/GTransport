@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Supprimer chauffeur{% endblock %}
+{% block content %}
+<div class="card carte p-4">
+  <h2 class="h5">Supprimer ce chauffeur ?</h2>
+  <p class="text-muted">Cette action est irréversible.</p>
+  <form method="post">{% csrf_token %}
+    <button class="btn btn-danger">Oui, supprimer</button>
+    <a href="{% url 'chauffeur_liste' %}" class="btn btn-outline-secondary">Annuler</a>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}Tableau de bord{% endblock %}
+{% block content %}
+<div class="row g-3">
+  <div class="col-12">
+    <div class="card carte p-4">
+      <h1 class="h4 mb-1">Bienvenue 👋</h1>
+      <p class="text-muted mb-0">Utilisez la barre de navigation pour gérer les Véhicules, Chauffeurs, Trajets et Réservations.</p>
+    </div>
+  </div>
+
+  <div class="col-6 col-md-3">
+    <div class="card carte p-3 text-center">
+      <div class="text-muted">Véhicules</div>
+      <div class="h3">{{ statistiques.vehicules }}</div>
+      <a class="small" href="{% url 'vehicule_liste' %}">Accéder</a>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="card carte p-3 text-center">
+      <div class="text-muted">Chauffeurs</div>
+      <div class="h3">{{ statistiques.chauffeurs }}</div>
+      <a class="small" href="{% url 'chauffeur_liste' %}">Accéder</a>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="card carte p-3 text-center">
+      <div class="text-muted">Trajets</div>
+      <div class="h3">{{ statistiques.trajets }}</div>
+      <a class="small" href="{% url 'trajet_liste' %}">Accéder</a>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="card carte p-3 text-center">
+      <div class="text-muted">Réservations</div>
+      <div class="h3">{{ statistiques.reservations }}</div>
+      <a class="small" href="{% url 'reservation_liste' %}">Accéder</a>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card carte p-3">
+      <h3 class="h6">Derniers trajets</h3>
+      <ul class="list-group list-group-flush">
+        {% for t in derniers_trajets %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>{{ t.origine }} → {{ t.destination }} • {{ t.depart_datetime|date:"d/m H:i" }}</span>
+            <a href="{% url 'trajet_detail' t.pk %}" class="btn btn-sm btn-outline-primary">Détails</a>
+          </li>
+        {% empty %}
+          <li class="list-group-item text-muted">Aucun trajet pour le moment.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card carte p-3">
+      <h3 class="h6">Dernières réservations</h3>
+      <ul class="list-group list-group-flush">
+        {% for r in dernieres_reservations %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>{{ r.nom_client }} • {{ r.trajet.origine }} → {{ r.trajet.destination }}</span>
+            <a href="{% url 'reservation_detail' r.pk %}" class="btn btn-sm btn-outline-primary">Détails</a>
+          </li>
+        {% empty %}
+          <li class="list-group-item text-muted">Aucune réservation pour le moment.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

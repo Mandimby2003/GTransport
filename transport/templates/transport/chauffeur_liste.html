@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Chauffeurs{% endblock %}
+{% block content %}
+<div class="entete-section">
+  <h2 class="h4">Chauffeurs</h2>
+  <a href="{% url 'chauffeur_ajouter' %}" class="btn btn-primary">Ajouter</a>
+</div>
+<div class="card carte">
+  <div class="table-responsive">
+    <table class="table align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Nom</th><th>Téléphone</th><th>Permis</th><th>Statut</th><th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in object_list %}
+        <tr>
+          <td><a href="{% url 'chauffeur_detail' c.pk %}">{{ c.prenom }} {{ c.nom }}</a></td>
+          <td>{{ c.telephone|default:"—" }}</td>
+          <td>{{ c.numero_permis|default:"—" }}</td>
+          <td>{{ c.get_statut_display }}</td>
+          <td class="text-end">
+            <a href="{% url 'chauffeur_modifier' c.pk %}" class="btn btn-sm btn-outline-primary">Modifier</a>
+            <a href="{% url 'chauffeur_supprimer' c.pk %}" class="btn btn-sm btn-outline-danger">Supprimer</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5" class="text-center text-muted py-4">Aucun chauffeur.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% if is_paginated %}
+  <div class="card-body">
+    <nav>
+      <ul class="pagination mb-0">
+        {% if page_obj.has_previous %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Précédent</a></li>
+        {% endif %}
+        <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span></li>
+        {% if page_obj.has_next %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Suivant</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

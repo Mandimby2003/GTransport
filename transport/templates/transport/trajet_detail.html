@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Détail trajet{% endblock %}
+{% block content %}
+<div class="card carte p-4">
+  <h2 class="h5">Trajet: {{ object.origine }} → {{ object.destination }}</h2>
+  <dl class="row mt-3">
+    <dt class="col-sm-3">Départ</dt><dd class="col-sm-9">{{ object.depart_datetime|date:"d/m/Y H:i" }}</dd>
+    <dt class="col-sm-3">Arrivée</dt><dd class="col-sm-9">{{ object.arrivee_datetime|date:"d/m/Y H:i" }}</dd>
+    <dt class="col-sm-3">Véhicule</dt><dd class="col-sm-9">{{ object.vehicule.immatriculation }}</dd>
+    <dt class="col-sm-3">Chauffeur</dt><dd class="col-sm-9">{{ object.chauffeur.prenom }} {{ object.chauffeur.nom }}</dd>
+    <dt class="col-sm-3">Statut</dt><dd class="col-sm-9">{{ object.get_statut_display }}</dd>
+  </dl>
+  <div class="mt-3 d-flex gap-2">
+    <a href="{% url 'trajet_modifier' object.pk %}" class="btn btn-outline-primary">Modifier</a>
+    <a href="{% url 'trajet_supprimer' object.pk %}" class="btn btn-outline-danger">Supprimer</a>
+    <a href="{% url 'reservation_ajouter' %}?trajet={{ object.pk }}" class="btn btn-primary">Ajouter une réservation</a>
+  </div>
+  <hr>
+  <h3 class="h6">Réservations</h3>
+  <div class="table-responsive">
+    <table class="table">
+      <thead><tr><th>Client</th><th>Téléphone</th><th>Places</th><th>Statut</th><th></th></tr></thead>
+      <tbody>
+        {% for r in object.reservations.all %}
+        <tr>
+          <td><a href="{% url 'reservation_detail' r.pk %}">{{ r.nom_client }}</a></td>
+          <td>{{ r.telephone_client|default:"—" }}</td>
+          <td>{{ r.nombre_passagers }}</td>
+          <td>{{ r.get_statut_display }}</td>
+          <td class="text-end">
+            <a href="{% url 'reservation_modifier' r.pk %}" class="btn btn-sm btn-outline-primary">Modifier</a>
+            <a href="{% url 'reservation_supprimer' r.pk %}" class="btn btn-sm btn-outline-danger">Supprimer</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5" class="text-muted">Aucune réservation.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
