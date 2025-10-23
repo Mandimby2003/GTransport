@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-npp1weojj7y$oz!mu!#i^k11qgd=bg96d-lctbr%ftza*q*25w
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['gtransport.onrender.com']
 
 
 # Application definition
